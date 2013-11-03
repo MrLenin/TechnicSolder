@@ -5,16 +5,16 @@ class UserController extends BaseController {
 	public function __construct()
 	{
 		$this->beforeFilter('auth');
-		$this->beforeFilter('perm', array('solder_users'))->only('delete','do_delete');
+		$this->beforeFilter('perm:solder_users', array('only' => array('delete','do_delete')));
 	}
 
 	public function getList()
 	{
 		$users = User::all();
-		return View::make('user.list')->with('users', $users);
+		return View::make('user.list', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with('users', $users);
 	}
 
-	public function postEdit($user_id = null)
+	public function getEdit($user_id = null)
 	{
 		if (empty($user_id))
 			return Redirect::to('user/list');
@@ -89,7 +89,7 @@ class UserController extends BaseController {
 			}
 		}
 
-		return View::make('user.edit')->with('user', $user);
+		return View::make('user.edit', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with('user', $user);
 	}
 
 	public function getCreate()
@@ -97,7 +97,7 @@ class UserController extends BaseController {
 		if (!Auth::user()->permission->solder_full && !Auth::user()->permission->solder_users)
 			return Redirect::to('dashboard')
 			->with('permission','You do not have permission to access this area.');
-		return View::make('user.create');
+		return View::make('user.create', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
 	}
 
 	public function postCreate()
@@ -152,7 +152,7 @@ class UserController extends BaseController {
 		if (empty($user))
 			return Redirect::to('dashboard');
 
-		return View::make('user.delete')->with(array('user' => $user));
+		return View::make('user.delete', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with(array('user' => $user));
 	}
 
 	public function postDelete($user_id = null)

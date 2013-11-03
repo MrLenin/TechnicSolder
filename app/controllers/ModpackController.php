@@ -141,7 +141,11 @@ class ModpackController extends BaseController {
 
 	public function getCreate()
 	{
-		Asset::add('jquery', 'js/jquery.slugify.js');
+		Basset::collection('jquery', function($collection)
+		{
+			$collection->javascript('js/jquery.slugify.jss');
+		});
+
 		return View::make('modpack.create', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
 	}
 

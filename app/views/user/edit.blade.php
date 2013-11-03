@@ -52,7 +52,7 @@
     <div class="controls">
         <label for="solder-create"><input type="checkbox" name="solder-create" id="solder-create" value="1"{{ $checked = ($user->permission->solder_create ? " checked" : "") }}> Create Modpacks</label>
         @foreach (Modpack::all() as $modpack)
-            <label for="{{ $modpack->slug }}"><input type="checkbox" name="modpack[]" id="{{ $modpack->slug }}" value="{{ $modpack->id }}"{{ $checked = (in_array($modpack->id, $user->permission->modpacks) ? " checked" : "") }}> {{ $modpack->name }}</label>
+            <label for="{{ $modpack->slug }}"><input type="checkbox" name="modpack[]" id="{{ $modpack->slug }}" value="{{ $modpack->id }}"{{ $checked = (in_array($modpack->id, array($user->permission->modpacks)) ? " checked" : "") }}> {{ $modpack->name }}</label>
         @endforeach
     </div>
 </div>

@@ -17,7 +17,7 @@ class SolderController extends BaseController {
 			return Redirect::to('solder/configure')
 			->with('success','Your solder configuration has been updated.');
 		}
-		return View::make('solder.configure');
+		return View::make('solder.configure', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
 	}
 
 }
