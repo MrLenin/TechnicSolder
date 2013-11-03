@@ -33,19 +33,18 @@ class BaseController extends Controller {
 		return View::make('dashboard.login');
 	}
 
-	public function doLogin()
+	public function postLogin()
 	{
 		$email    = Input::get('email');
 		$password = Input::get('password');
 		$remember = Input::get('remember');
 
 		$credentials = array(
-			'username' => $email,
-			'password' => $password,
-			'remember' => !empty($remember) ? $remember : null
+			'email' => $email,
+			'password' => $password
 			);
-		if ( Auth::attempt($credentials)) {
-			Auth::user()->last_ip = Request::ip();
+		if ( Auth::attempt($credentials, !empty($remember) ? true : false)) {
+			Auth::user()->last_ip = Request::getClientIp();
 			Auth::user()->save();
 			return Redirect::to('dashboard/');
 		} else {

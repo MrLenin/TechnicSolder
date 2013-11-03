@@ -1,20 +1,19 @@
 {
-	"name": "solder/solder",
-	"type": "application",
-	"description": "Technic Solder API using Laravel Framework",
-	"homepage": "https://github.com/TechnicPack/TechnicSolder",
-	"license": "MIT",
-	"authors": [{
-		"name": "Ryan Cohen",
-		"email": "sctsnipe@gmail.com",
-		"homepage": "http://www.sctgaming.com",
-		"role": "Developer"
-		}],
-	"require": {
-		"laravel/framework": "4.0.*"
+	"name" : "laravel/laravel",
+	"description" : "The Laravel Framework.",
+	"keywords" : [
+		"framework",
+		"laravel"
+	],
+	"license" : [
+		"MIT"
+	],
+	"require" : {
+		"patricktalmadge/bootstrapper" : "dev-develop",
+		"laravel/framework" : "4.0.*"
 	},
-	"autoload": {
-		"classmap": [
+	"autoload" : {
+		"classmap" : [
 			"app/commands",
 			"app/controllers",
 			"app/models",
@@ -23,5 +22,17 @@
 			"app/tests/TestCase.php"
 		]
 	},
-	"minimum-stability": "dev"
+	"minimum-stability" : "dev",
+	"config" : {
+		"preferred-install" : "dist"
+	},
+	"scripts" : {
+		"post-update-cmd" : [
+			"php artisan clear-compiled",
+			"php artisan optimize"
+		],
+		"post-install-cmd" : [
+			"php artisan optimize"
+		]
+	}
 }

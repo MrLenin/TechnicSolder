@@ -14,12 +14,12 @@ class ApiController extends BaseController
 	public function getIndex()
 	{
 		return Response::json(array(
-				'api'     => 'TechnicSolder', 
+				'api'     => 'TechnicSolder',
 				'version' => $this->getSolderVersion(),
 				'stream' => $this->getSolderStream()
 				));
 	}
-	
+
 	/**
 	 * Retrieve a Modpack
 	 * @param  String $modpack Modpack slug
@@ -29,7 +29,30 @@ class ApiController extends BaseController
 	public function getModpack($modpack = null, $build = null)
 	{
 		if (empty($modpack))
-			return Response::json($this->fetchModpacks());
+		{
+			if (Input::has('include'))
+			{
+				$include = Input::get('include');
+				switch ($include)
+				{
+					case "full":
+						$modpacks = $this->fetch_modpacks();
+						$m_array = array();
+						foreach ($modpacks['modpacks'] as $slug => $name)
+						{
+							$modpack = $this->fetch_modpack($slug);
+							$m_array[$slug] = $modpack;
+						}
+						$response = array();
+						$response['modpacks'] = $m_array;
+						$response['mirror_url'] = $modpacks['mirror_url'];
+						return Response::json($response);
+						break;
+				}
+			} else {
+				return Response::json($this->fetchModpacks());
+			}
+		}
 		else {
 			if (empty($build))
 				return Response::json($this->fetchModpack($modpack));
@@ -64,7 +87,7 @@ class ApiController extends BaseController
 		if (empty($version))
 			return Response::json($this->fetchMod($mod));
 
-		return Response::json($this->fetchModversion($mod,$version));
+		return Response::json($this->fetchModVersion($mod,$version));
 	}
 
 	/**
@@ -93,7 +116,7 @@ class ApiController extends BaseController
 		{
 			$modpacks = Cache::get('modpacks');
 		} else {
-			$modpacks = Modpack::all();
+			$modpacks = Modpack::where('hidden','=','0')->orderBy('order')->get();
 			Cache::put('modpacks', $modpacks, 5);
 		}
 
@@ -122,15 +145,17 @@ class ApiController extends BaseController
 		{
 			$modpack = Cache::Get('modpack.'.$slug);
 		} else {
-			$modpack = Modpack::where("slug","=",$slug)->first();
+			$modpack = Modpack::with('Builds')
+							->where("slug","=",$slug)->first();
 			Cache::put('modpack.'.$slug,$modpack,5);
 		}
-		
+
 
 		if (empty($modpack))
 			return array("error" => "Modpack does not exist");
 
 		$response['name']           = $modpack->slug;
+		$response['display_name']	= $modpack->name;
 		$response['url']            = $modpack->url;
 		$response['icon_md5']       = $modpack->icon_md5;
 		$response['logo_md5']       = $modpack->logo_md5;
@@ -168,13 +193,13 @@ class ApiController extends BaseController
 
 		if (empty($modpack))
 			return array("error" => "Modpack does not exist");
-			
+
 		$buildpass = $build;
 		if (Cache::has('modpack.'.$slug.'.build.'.$build))
 		{
 			$build = Cache::get('modpack.'.$slug.'.build.'.$build);
 		} else {
-			$build = Build::with('modversions')
+			$build = Build::with('ModVersions')
 						->where("modpack_id", "=", $modpack->id)
 						->where("version", "=", $build)->first();
 			Cache::put('modpack.'.$slug.'.build.'.$buildpass,$build,5);
@@ -184,6 +209,7 @@ class ApiController extends BaseController
 			return array("error" => "Build does not exist");
 
 		$response['minecraft'] = $build->minecraft;
+		$response['minecraft_md5'] = $build->minecraft_md5;
 		$response['forge'] = $build->forge;
 		$response['mods'] = array();
 
@@ -224,7 +250,7 @@ class ApiController extends BaseController
 
 				$response['mods'][] = $data;
 			}
-			
+
 		}
 
 		return $response;
@@ -260,7 +286,7 @@ class ApiController extends BaseController
 	 * @param  String $version Mod Version
 	 * @return Array          Array containing mod version information
 	 */
-	private function fetchModversion($mod, $version)
+	private function fetchModVersion($mod, $version)
 	{
 		$response = array();
 

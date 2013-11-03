@@ -1,6 +1,6 @@
 <?php
 
-class Modversion extends Eloquent {
+class ModVersion extends Eloquent {
 	public $timestamps = true;
 
 	public function mod()

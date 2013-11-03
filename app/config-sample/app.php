@@ -17,6 +17,19 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Application URL
+	|--------------------------------------------------------------------------
+	|
+	| This URL is used by the console to properly generate URLs when using
+	| the Artisan command line tool. You should set this to the root of
+	| your application so that it is used when running Artisan tasks.
+	|
+	*/
+
+	'url' => 'http://localhost',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Application Timezone
 	|--------------------------------------------------------------------------
 	|
@@ -43,29 +56,16 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Application Fallback Locale
-	|--------------------------------------------------------------------------
-	|
-	| The fallback locale determines the locale to use when the current one
-	| is not available. You may change the value to correspond to any of
-	| the language folders that are provided through your application.
-	|
-	*/
-
-	'fallback_locale' => 'en',
-
-	/*
-	|--------------------------------------------------------------------------
 	| Encryption Key
 	|--------------------------------------------------------------------------
 	|
 	| This key is used by the Illuminate encrypter service and should be set
-	| to a random, long string, otherwise these encrypted values will not
-	| be safe. Make sure to change it before deploying any application!
+	| to a random, 32 character string, otherwise these encrypted strings
+	| will not be safe. Please do this before deploying an application!
 	|
 	*/
 
-	'key' => 'YourSecretKey!!!',
+	'key' => 'n2GcsgjdMM1xvl01Vkzsp0BnoQ8OxyGx',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -96,12 +96,15 @@ return array(
 		'Illuminate\Foundation\Providers\KeyGeneratorServiceProvider',
 		'Illuminate\Log\LogServiceProvider',
 		'Illuminate\Mail\MailServiceProvider',
+		'Illuminate\Foundation\Providers\MaintenanceServiceProvider',
 		'Illuminate\Database\MigrationServiceProvider',
+		'Illuminate\Foundation\Providers\OptimizeServiceProvider',
 		'Illuminate\Pagination\PaginationServiceProvider',
 		'Illuminate\Foundation\Providers\PublisherServiceProvider',
 		'Illuminate\Queue\QueueServiceProvider',
 		'Illuminate\Redis\RedisServiceProvider',
 		'Illuminate\Auth\Reminders\ReminderServiceProvider',
+		'Illuminate\Foundation\Providers\RouteListServiceProvider',
 		'Illuminate\Database\SeedServiceProvider',
 		'Illuminate\Foundation\Providers\ServerServiceProvider',
 		'Illuminate\Session\SessionServiceProvider',
@@ -110,7 +113,8 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-
+		'Bootstrapper\BootstrapperServiceProvider',
+        'Basset\BassetServiceProvider',
 	),
 
 	/*
@@ -124,7 +128,7 @@ return array(
 	|
 	*/
 
-	'manifest' => __DIR__.'/../storage/meta',
+	'manifest' => storage_path().'/meta',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -155,7 +159,7 @@ return array(
 		'File'            => 'Illuminate\Support\Facades\File',
 		'Form'            => 'Illuminate\Support\Facades\Form',
 		'Hash'            => 'Illuminate\Support\Facades\Hash',
-		'Html'            => 'Illuminate\Html\HtmlBuilder',
+		'HTML'            => 'Illuminate\Support\Facades\HTML',
 		'Input'           => 'Illuminate\Support\Facades\Input',
 		'Lang'            => 'Illuminate\Support\Facades\Lang',
 		'Log'             => 'Illuminate\Support\Facades\Log',
@@ -175,7 +179,30 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
-
+		'Alert'           => 'Bootstrapper\Alert',
+		'Badge'           => 'Bootstrapper\Badge',
+		'Breadcrumb'      => 'Bootstrapper\Breadcrumb',
+		'Button'          => 'Bootstrapper\Button',
+		'ButtonGroup'     => 'Bootstrapper\ButtonGroup',
+		'ButtonToolbar'   => 'Bootstrapper\ButtonToolbar',
+		'Carousel'        => 'Bootstrapper\Carousel',
+		'DropdownButton'  => 'Bootstrapper\DropdownButton',
+		'Form'            => 'Bootstrapper\Form',
+		'Helpers'         => 'Bootstrapper\Helpers',
+		'Icon'            => 'Bootstrapper\Icon',
+		'Image'           => 'Bootstrapper\Image',
+		'Label'           => 'Bootstrapper\Label',
+		'MediaObject'     => 'Bootstrapper\MediaObject',
+		'Navbar'          => 'Bootstrapper\Navbar',
+		'Navigation'      => 'Bootstrapper\Navigation',
+		'Paginator'       => 'Bootstrapper\Paginator',
+		'Progress'        => 'Bootstrapper\Progress',
+		'Tabbable'        => 'Bootstrapper\Tabbable',
+		'Table'           => 'Bootstrapper\Table',
+		'Thumbnail'       => 'Bootstrapper\Thumbnail',
+		'Typeahead'       => 'Bootstrapper\Typeahead',
+		'Typography'      => 'Bootstrapper\Typography',
+        'Basset'          => 'Basset\Facade',
 	),
 
 );
