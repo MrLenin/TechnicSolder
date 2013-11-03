@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '192.168.0.4',
-			'database'  => 'solder',
-			'username'  => 'laravel',
-			'password'  => 'Q0p1w9_O2e8i3',
+			'host'      => 'localhost',
+			'database'  => 'database,
+			'username'  => 'username',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
