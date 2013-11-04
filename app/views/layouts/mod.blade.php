@@ -62,7 +62,7 @@
               @section('navigation')
               <li{{ $active = (Request::is('mod/list') ? ' class="active"' : null) }}><a href="{{ URL::to('mod/list') }}"><i class="icon-book"></i> Mod List</a></li>
               <li{{ $active = (Request::is('mod/create') ? ' class="active"' : null) }}><a href="{{ URL::to('mod/create') }}"><i class="icon-plus"></i> Add a Mod</a></li>
-              @stop
+              @show
             </ul>
           </div><!--/.well -->
         </div><!--/span-->

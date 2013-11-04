@@ -96,7 +96,7 @@ Route::filter('modpack', function($route, $request, $modpack)
 {
 	$perm = Auth::user()->permission;
 
-	if (!$perm->solder_full && !in_array($modpack, $perm->modpacks))
+	if (!$perm->pluck('solder_full') && !in_array($modpack, $perm->pluck('modpacks')))
 	{
 		return Redirect::to('dashboard')
 		->with('permission','You do not have permission to access this area.');
@@ -112,7 +112,7 @@ Route::filter('build', function($route, $request, $build)
 
 	$modpack = $build->modpack;
 
-	if (!$perm->solder_full && !in_array($modpack->id, $perm->modpacks))
+	if (!$perm->pluck('solder_full') && !in_array($modpack, $perm->pluck('modpacks')))
 	{
 		return Redirect::to('dashboard')
 		->with('permission','You do not have permission to access this area.');
