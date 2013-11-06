@@ -30,43 +30,45 @@
   </head>
 
   <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{{ URL::to('dashboard') }}">TechnicSolder</a>
-          <div class="nav-collapse collapse">
-            <p class="navbar-text pull-right">
-              Logged in as <a href="#" class="navbar-link">{{ Auth::user()->email }}</a>. ({{ HTML::link('logout','Logout') }})
-            </p>
-            <ul class="nav">
-              <li><a href="{{ URL::to('dashboard') }}">Dashboard</a></li>
-              <li class="active"><a href="{{ URL::to('modpack') }}">Modpacks</a></li>
-              <li><a href="{{ URL::to('mod/list') }}">Mod Library</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          <a class="navbar-brand" href="{{ URL::to('dashboard') }}">TechnicSolder</a>
         </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ URL::to('dashboard') }}">Dashboard</a></li>
+            <li class="active"><a href="{{ URL::to('modpack') }}">Modpacks</a></li>
+            <li><a href="{{ URL::to('mod') }}">Mod Library</a></li>
+          </ul>
+          <ul class="navbar-text navbar-right">
+            Logged in as <a href="#" class="navbar-link">{{ Auth::user()->email }}</a>. ({{ HTML::link('logout','Logout') }})
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Current Modpacks</li>
-              @foreach (Modpack::all() as $modpack)
-                <li{{ $active = (Request::is('modpack/view/'.$modpack->id) ? ' class="active"' : null) }}><a href="{{ URL::to('modpack/view/'.$modpack->id) }}"><img src="{{ Config::get('solder.mirror_url').$modpack->slug.'/resources/icon.png' }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $hidden = ($modpack->hidden ? " (Hidden)" : "") }}</a></li>
-              @endforeach
-              <li{{ $active = (Request::is('modpack/create') ? ' class="active"' : null) }}><a href="{{ URL::to('modpack/create') }}"><i class="icon-plus"></i> Create New Modpack</a></li>
-            </ul>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="panel panel-default">
+            <div class="panel-heading text-center">
+              <h3 class="panel-title">Current Modpacks</h3>
+            </div>
+            <div class="list-group">
+            @foreach (Modpack::all() as $modpack)
+              <a href="{{ URL::to('modpack/view/'.$modpack->id) }}"{{ $active = (Request::is('modpack/view/'.$modpack->id) ? ' class="active list-group-item"' : ' class="list-group-item"') }}><img src="{{ Config::get('solder.mirror_url').$modpack->slug.'/resources/icon.png' }}" style="width: 16px; height: 16px;"> {{ $modpack->name }}{{ $hidden = ($modpack->hidden ? " (Hidden)" : "") }}</a>
+            @endforeach
+            <a href="{{ URL::to('modpack/create') }}"{{ $active = (Request::is('modpack/create') ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-plus"></i> Create New Modpack</a></li>
+            </div>
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="span9">
+        <div class="col-md-9">
           @yield('content')
         </div><!--/span-->
       </div><!--/row-->

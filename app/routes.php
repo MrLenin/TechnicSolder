@@ -22,10 +22,11 @@ Route::post('/modpack/delete/{id}', 'ModpackController@postDelete');
 Route::post('/modpack/edit/{id}', 'ModpackController@postEdit');
 Route::post('/modpack/addbuild/{id}', 'ModpackController@postAddBuild');
 Route::controller('modpack', 'ModpackController');
-Route::post('mod/view/{id}', 'ModController@postModify');
-Route::post('mod/delete/{id}', 'ModController@postDelete');
-Route::post('mod/create', 'ModController@postCreate');
-Route::controller('mod', 'ModController');
+Route::get('mod/{id}/delete', array('as' => 'mod.delete', 'uses' => 'ModController@delete'));
+//Route::get('mod/{id}/versions', array('as' => 'mod.versions', 'uses' => 'ModController@versions'));
+//Route::post('mod/addversion', 'ModController@addVersion');
+Route::resource('mod', 'ModController');
+Route::resource('mod.version', 'ModVersionController', array('only' => array('store', 'destroy', 'update')));
 
 /**
  * Authentication Routes

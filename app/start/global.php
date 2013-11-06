@@ -81,3 +81,28 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+Form::macro('btnLink', function($btnText, $route, $destId, $btnAttributes = array(), $anchorAttributes = array(), $btnType = 'button') {
+
+	$type = array('type' => $btnType);
+	$btnAttributes = array_merge($btnAttributes, $type);
+
+	$href  = link_to($route);
+	$action = Route::currentRouteName();
+	if ( isset($action['as']) )
+	{
+		$href  = route($route, array($destId));
+	}
+
+	$output = '<a href="'. $href .'"';
+
+	if (!empty($anchorAttributes)) {
+		foreach ($anchorAttributes as $key => $value) {
+			$output .= " $key=\"{$value}\"";
+		}
+	}
+
+	$output .= '>'. Form::button($btnText, $btnAttributes) .'</a>';
+
+	return $output;
+});

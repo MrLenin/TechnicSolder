@@ -2,8 +2,8 @@
 @section('navigation')
 @parent
 <li class="nav-header">Mod: {{ $mod->name }}</li>
-<li><a href="{{ URL::to('mod/view/'.$mod->id) }}"><i class="icon-align-left"></i> Mod Details</a>
-<li class="active"><a href="{{ URL::to('mod/versions/'.$mod->id) }}"><i class="icon-tag"></i> Mod Versions</a></li>
+<li><a href="{{ route('mod.edit', $mod->id) }}"><i class="glyphicon glyphicon-align-left"></i> Mod Details</a>
+<li class="active"><a href="{{ route('mod.show', $mod->id) }}"><i class="glyphicon glyphicon-tag"></i> Mod Versions</a></li>
 @endsection
 @section('content')
 <h1>Mod Library</h1>
@@ -21,23 +21,23 @@
 {{ Table::open() }}
 {{ Table::headers('','Version', 'MD5', 'Download URL', '') }}
 <tr id="add-row">
-	<form method="post" id="add" action="{{ URL::to('mod/addversion') }}">
+	<form method="post" id="add" action="{{ route('mod.version.store', $mod->id) }}">
 		<input type="hidden" name="mod-id" value="{{ $mod->id }}">
 		<td></td>
 		<td>
-			<input type="text" name="add-version" id="add-version" class="input-small"></td>
+			<input type="text" name="add-version" id="add-version" class="input-sm"></td>
 		<td>N/A</td>
 		<td><span id="add-url">N/A</span></td>
-		<td><button type="submit" class="btn btn-success btn-small add">Add Version</button></td>
+		<td><button type="submit" class="btn btn-success btn-sm add">Add Version</button></td>
 	</form>
 </tr>
 @foreach ($mod->versions as $ver)
 	<tr class="version" rel="{{ $ver->id }}">
-		<td><i class="version-icon icon-plus" rel="{{ $ver->id }}"></i></td>
+		<td><i class="version-icon glyphicon glyphicon-plus" rel="{{ $ver->id }}"></i></td>
 		<td class="version" rel="{{ $ver->id }}">{{ $ver->version }}</td>
 		<td><span class="md5" rel="{{ $ver->id }}">{{ $ver->md5 }}</span></td>
 		<td class="url" rel="{{ $ver->id }}"><a href="{{ Config::get('solder.mirror_url').'mods/'.$mod->name.'/'.$mod->name.'-'.$ver->version.'.zip' }}">{{ Config::get('solder.mirror_url').'mods/'.$mod->name.'/'.$mod->name.'-'.$ver->version.'.zip' }}</a></td>
-		<td>{{ HTML::link('mod/rehash/'.$ver->id,'Rehash', 'class="btn btn-primary btn-small rehash" rel="'.$ver->id.'"') }} {{ HTML::link('mod/deleteversion/'.$ver->id,'Delete', 'class="btn btn-danger btn-small delete" rel="'.$ver->id.'"') }}</td>
+		<td>{{ HTML::linkRoute('mod.version.update', 'Rehash', array('version' => $ver->id, 'mod' => $mod->id), array('class' => 'btn btn-primary btn-sm rehash', 'rel'=> $ver->id, 'title' => 'Rehash')) }} {{ HTML::linkRoute('mod.version.destroy', 'Delete', array('version' => $ver->id, 'mod' => $mod->id), array('class' => 'btn btn-danger btn-sm delete', 'rel'=> $ver->id, 'title' => 'Delete')) }}</td>
 	</tr>
 	<tr class="version-details" rel="{{ $ver->id }}" style="display: none">
 		<td colspan="5">
@@ -63,7 +63,7 @@ $('#add').submit(function(e) {
 	if ($('#add-version').val() != "") {
 		$.ajax({
 			type: "POST",
-			url: "{{ URL::to('mod/addversion/') }}",
+			url: "{{ URL::to('mod/version') }}",
 			data: $("#add").serialize(),
 			success: function (data) {
 				if (data.status == "success") {
@@ -78,7 +78,7 @@ $('#add').submit(function(e) {
 
 $('.version-icon').click(function() {
 	$('.version-details[rel=' + $(this).attr('rel') + "]").toggle(function() {
-		$('.version-icon[rel=' + $(this).attr('rel') + "]").toggleClass("icon-minus");
+		$('.version-icon[rel=' + $(this).attr('rel') + "]").toggleClass("glyphicon glyphicon-minus");
 	});
 });
 
@@ -86,8 +86,8 @@ $('.rehash').click(function(e) {
 	e.preventDefault();
 	$(".md5[rel=" + $(this).attr('rel') + "]").fadeOut();
 	$.ajax({
-		type: "GET",
-		url: "{{ URL::to('mod/rehash/') }}" + $(this).attr('rel'),
+		type: "PUT",
+		url: "{{ URL::to('mod/version/') }}" + $(this).attr('rel'),
 		success: function (data) {
 			$(".md5[rel=" + data.version_id + "]").html(data.md5);
 			$(".md5[rel=" + data.version_id + "]").fadeIn();
@@ -98,8 +98,8 @@ $('.rehash').click(function(e) {
 $('.delete').click(function(e) {
 	e.preventDefault();
 	$.ajax({
-		type: "GET",
-		url: "{{ URL::to('mod/deleteversion/') }}" + $(this).attr('rel'),
+		type: "DELETE",
+		url: "{{ URL::to('mod/version/') }}" + $(this).attr('rel'),
 		success: function (data) {
 			$('.version[rel=' + data.version_id + ']').fadeOut();
 			$('.version-details[rel=' + data.version_id + ']').fadeOut();

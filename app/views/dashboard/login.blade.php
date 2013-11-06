@@ -9,7 +9,6 @@
     {{ Basset::show('bootstrapper.css') }}
     {{ Basset::show('bootstrapper.js') }}
     <!-- Le styles -->
-    <link href="../assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 40px;

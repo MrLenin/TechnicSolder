@@ -1,7 +1,7 @@
 @extends('layouts/mod')
 @section('navigation')
 @parent
-<li class="nav-header">Mod: None Selected</li>
+<div class="list-group-item"><i class="glyphicon glyphicon-wrench"></i> Mod: None Selected</div>
 @endsection
 @section('content')
 <h1>Mod Library</h1>
@@ -29,7 +29,7 @@
 			<td>{{ $mod->name }}</td>
 		@endif
 		<td>{{ $mod->author }}
-		<td>{{ HTML::link('mod/view/'.$mod->id,'Manage') }}</td>
+		<td>{{ HTML::link('mod/'.$mod->id.'/edit','Manage') }}</td>
 	</tr>
 @endforeach
 {{ Table::close() }}
