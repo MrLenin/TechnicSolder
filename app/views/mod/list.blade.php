@@ -1,7 +1,7 @@
 @extends('layouts/mod')
 @section('navigation')
 @parent
-<div class="list-group-item"><i class="glyphicon glyphicon-wrench"></i> Mod: None Selected</div>
+              <li class="dropdown-header"><strong>MOD: NONE SELECTED</strong></li>
 @endsection
 @section('content')
 <h1>Mod Library</h1>

@@ -5,6 +5,11 @@ class BaseController extends Controller {
 	const SOLDER_STREAM = 'DEV';
 	const SOLDER_VERSION = '0.3';
 
+	public function __construct()
+	{
+		View::share(array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
+	}
+
 	public static function getSolderStream()
 	{
 		return self::SOLDER_STREAM;

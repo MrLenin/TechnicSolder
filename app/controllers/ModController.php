@@ -4,7 +4,8 @@ class ModController extends BaseController {
 
 	public function __construct()
 	{
-//		parent::__construct();
+		parent::__construct();
+
 		$this->beforeFilter('auth');
 		$this->beforeFilter('perm:solder_mods');
 		$this->beforeFilter('perm:mods_manage', array('only' => array('view','versions')));
@@ -24,29 +25,24 @@ class ModController extends BaseController {
 		} else {
 			$mods = DB::table('mods')->paginate(20);
 		}
-		return View::make('mod.list', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with(array('mods' => $mods,'search' => $search));
+		return View::make('mod.list')->with(array('mods' => $mods,'search' => $search));
 	}
 
 	public function edit($mod_id = null)
 	{
 		if (empty($mod_id))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$mod = Mod::find($mod_id);
 		if (empty($mod))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
-		return View::make('mod.edit', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with(array('mod' => $mod));
+		return View::make('mod.edit')->with(array('mod' => $mod));
 	}
 
 	public function create()
 	{
-		Basset::collection('jquery', function($collection)
-		{
-			$collection->javascript('js/jquery.slugify.jss');
-		});
-
-		return View::make('mod.create', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
+		return View::make('mod.create');
 	}
 
 	public function store()
@@ -73,7 +69,7 @@ class ModController extends BaseController {
 			$mod->description = Input::get('description');
 			$mod->link = Input::get('link');
 			$mod->save();
-			return Redirect::to('mod/'.$mod->id);
+			return Redirect::route('mod.show', $mod->id);
 		} catch (Exception $e) {
 			Log::exception($e);
 		}
@@ -82,23 +78,23 @@ class ModController extends BaseController {
 	public function delete($mod_id = null)
 	{
 		if (empty($mod_id))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$mod = Mod::find($mod_id);
 		if (empty($mod))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
-		return View::make('mod.delete', array('solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()))->with(array('mod' => $mod));
+		return View::make('mod.delete')->with(array('mod' => $mod));
 	}
 
 	public function update($mod_id = null)
 	{
 		if (empty($mod_id))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$mod = Mod::find($mod_id);
 		if (empty($mod))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$rules = array(
 			'pretty_name' => 'required',
@@ -132,11 +128,11 @@ class ModController extends BaseController {
 	public function destroy($mod_id = null)
 	{
 		if (empty($mod_id))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$mod = Mod::find($mod_id);
 		if (empty($mod))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		foreach ($mod->versions as $ver)
 		{
@@ -145,18 +141,18 @@ class ModController extends BaseController {
 		}
 		$mod->delete();
 
-		return Redirect::to('mod')->with('deleted','Mod deleted!');
+		return Redirect::route('mod')->with('deleted','Mod deleted!');
 	}
 
 	public function show($mod_id = null)
 	{
 		if (empty($mod_id))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
 		$mod = Mod::find($mod_id);
 		if (empty($mod))
-			return Redirect::to('mod');
+			return Redirect::route('mod');
 
-		return View::make('mod.versions', array('mod' => $mod, 'solderVersion' => self::getSolderVersion(), 'solderStream' => self::getSolderStream()));
+		return View::make('mod.versions')->with(array('mod' => $mod));
 	}
 }

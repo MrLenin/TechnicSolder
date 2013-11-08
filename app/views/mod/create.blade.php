@@ -14,19 +14,19 @@
 	@endforeach
 	</div>
 @endif
-<form method="post" action="{{ URL::to('mod/create') }}">
-	<label for="pretty_name">Mod Name</label>
-	<input type="text" name="pretty_name" id="pretty_name" class="input-xxlarge">
-	<label for="name">Mod Slug</label>
-	<input type="text" name="name" id="name" class="input-xxlarge">
-	<label for="author">Author</label>
-	<input type="text" name="author" id="author" class="input-large">
-	<label for="description">Description</label>
-	<textarea name="description" id="description" class="input-xxlarge" rows="5"></textarea>
-	<label for="link">Mod Website</label>
-	<input type="text" name="link" id="link" class="input-xxlarge">
-	{{ Form::actions(array(Button::primary_submit('Add Mod'))) }}
-</form>
+{{ Form::open(array('route' => 'mod.store')) }}
+  {{ Form::label('pretty_name', 'Mod Name') }}
+  {{ Form::text('pretty_name', null, array('class' => 'input-xxlarge')) }}
+  {{ Form::label('name', 'Mod Slug') }}
+  {{ Form::text('name', null, array('class' => 'input-xxlarge')) }}
+  {{ Form::label('author', 'Author') }}
+  {{ Form::text('author', null, array('class' => 'input-xxlarge')) }}
+  {{ Form::label('description', 'Description') }}
+  {{ Form::textarea('description', null, array('class' => 'input-xxlarge', 'rows' => '5')) }}
+  {{ Form::label('link', 'Mod Website') }}
+  {{ Form::text('link', null, array('class' => 'input-xxlarge')) }}
+  {{ Button::primary_submit('Add Mod') }}
+{{ Form::close() }}
 <script type="text/javascript">
 $("#name").slugify('#pretty_name');
 $(".modslug").slugify("#pretty_name");

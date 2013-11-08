@@ -1,3 +1,5 @@
+@stylesheets('bootstrapper')
+@javascripts('bootstrapper')
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    {{ Basset::show('bootstrapper.css') }}
-    {{ Basset::show('bootstrapper.js') }}
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -39,15 +39,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ URL::to('dashboard') }}">TechnicSolder</a>
+          <a class="navbar-brand" href="{{ action('DashboardController@getIndex') }}">TechnicSolder</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ URL::to('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ URL::to('modpack') }}">Modpacks</a></li>
-            <li><a href="{{ URL::to('mod') }}">Mod Library</a></li>
+            <li class="active"><a href="{{ action('DashboardController@getIndex') }}">Dashboard</a></li>
+            <li><a href="{{ route('modpack.index') }}">Modpacks</a></li>
+            <li><a href="{{ route('mod.index') }}">Mod Library</a></li>
           </ul>
-          <ul class="navbar-text navbar-right">
+          <ul class="nav navbar-nav navbar-text navbar-right navbar-user">
             Logged in as <a href="#" class="navbar-link">{{ Auth::user()->email }}</a>. ({{ HTML::link('logout','Logout') }})
           </ul>
         </div><!--/.nav-collapse -->
@@ -56,22 +56,16 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-heading text-center">
-              <h3 class="panel-title">Solder</h3>
-            </div>
-            <div class="list-group">
-              <a href="{{ URL::to('dashboard') }}"{{ $active = (Request::is('dashboard') ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-home"></i> Dashboard</a>
-              <a href="{{ URL::to('user/edit/'.Auth::user()->id) }}"{{ $active = (Request::is('user/edit/'.Auth::user()->id) ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-edit"></i> Edit My Account</a>
-              <a href="#" class="list-group-item"><i class="glyphicon glyphicon-info-sign"></i> Statistics</a>
-            </div>
-            <div class="panel-heading text-center">
-              <h3 class="panel-title">Manage Solder</h3>
-            </div>
-            <div class="list-group">
-              <a href="{{ URL::to('solder/configure') }}"{{ $active = (Request::is('solder/configure') ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-cog"></i> Configuration</a>
-              <a href="{{ URL::to('user/list') }}"{{ $active = (Request::is('user/*') && !Request::is('user/edit/'.Auth::user()->id) ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-user"></i> Manage Users</a>
-            </div>
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="dropdown-header"><strong>SOLDER</strong></li>
+              <li{{ $active = (Request::is('dashboard') ? ' class="active"' : null) }}><a href="{{ action('DashboardController@getIndex') }}"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
+              <li{{ $active = (Request::is('user/edit/'.Auth::user()->id) ? ' class="active"' : null) }}><a href="{{ URL::to('user/edit/'.Auth::user()->id) }}"><i class="glyphicon glyphicon-edit"></i> Edit My Account</a></li>
+              <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i> Statistics</a></li>
+              <li class="dropdown-header"><strong>MANAGE SOLDER</strong></li>
+              <li{{ $active = (Request::is('solder/configure') ? ' class="active"' : null) }}><a href="{{ URL::to('solder/configure') }}"><i class="glyphicon glyphicon-cog"></i> Configuration</a></li>
+              <li{{ $active = (Request::is('user/*') && !Request::is('user/edit/'.Auth::user()->id) ? ' class="active"' : null) }}><a href="{{ URL::to('user/list') }}"><i class="glyphicon glyphicon-user"></i> Manage Users</a></li>
+            </ul>
           </div>
         </div><!--/span-->
         <div class="col-md-9">

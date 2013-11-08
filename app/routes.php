@@ -17,16 +17,15 @@ Route::controller('solder', 'SolderController');
 Route::post('/user/create', 'UserController@postCreate');
 Route::post('/user/delete/{id}', 'UserController@postDelete');
 Route::controller('user', 'UserController');
-Route::post('/modpack/create', 'ModpackController@postCreate');
-Route::post('/modpack/delete/{id}', 'ModpackController@postDelete');
-Route::post('/modpack/edit/{id}', 'ModpackController@postEdit');
-Route::post('/modpack/addbuild/{id}', 'ModpackController@postAddBuild');
-Route::controller('modpack', 'ModpackController');
-Route::get('mod/{id}/delete', array('as' => 'mod.delete', 'uses' => 'ModController@delete'));
-//Route::get('mod/{id}/versions', array('as' => 'mod.versions', 'uses' => 'ModController@versions'));
-//Route::post('mod/addversion', 'ModController@addVersion');
+Route::post('/modpack/addbuild/{id}', array('as' => 'modpack.addbuild', 'uses' => 'ModpackController@postAddBuild'));
+Route::get('/modpack/{id}/delete', array('as' => 'modpack.delete', 'uses' => 'ModpackController@delete'));
+Route::resource('modpack', 'ModpackController');
+Route::get('/mod/{id}/delete', array('as' => 'mod.delete', 'uses' => 'ModController@delete'));
 Route::resource('mod', 'ModController');
-Route::resource('mod.version', 'ModVersionController', array('only' => array('store', 'destroy', 'update')));
+Route::resource('mod.version', 'VersionController', array('only' => array('store', 'destroy', 'update')));
+Route::get('/modpack/build/{id}/delete', array('as' => 'modpack.build.delete', 'uses' => 'BuildController@delete'));
+Route::post('/modpack/build/modify/{action}', array('as' => 'modpack.build.modify', 'uses' => 'BuildController@modify'));
+Route::resource('modpack.build', 'BuildController', array('only' => array('create', 'edit', 'destroy', 'store')));
 
 /**
  * Authentication Routes

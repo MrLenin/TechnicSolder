@@ -1,10 +1,11 @@
 <?php
 
-class ModVersionController extends BaseController {
+class VersionController extends BaseController {
 
 	public function __construct()
 	{
-		//		parent::__construct();
+		parent::__construct();
+
 		$this->beforeFilter('auth');
 		$this->beforeFilter('perm:solder_mods');
 		$this->beforeFilter('perm:mods_manage', array('only' => array('view','versions')));
@@ -49,7 +50,7 @@ class ModVersionController extends BaseController {
 		}
 	}
 
-	public function destroy($ver_id = null)
+	public function destroy($mod_id = null, $ver_id = null)
 	{
 		if (empty($ver_id))
 			return Redirect::to('mod');
@@ -63,7 +64,7 @@ class ModVersionController extends BaseController {
 		return Response::json(array('version_id' => $old_id));
 	}
 
-	public function update($ver_id = null)
+	public function update($mod_id = null, $ver_id = null)
 	{
 		if (empty($ver_id))
 			return Redirect::to('mod');
@@ -109,7 +110,7 @@ class ModVersionController extends BaseController {
 			return $hash;
 		else {
 			Log::write("ERROR", "Attempted to remote MD5 mod " . $mod->name . " version " . $version . " located at " . $url ." but curl response did not return 200!");
-			return $this->remote_mod_md5($mod, $version, $attempts + 1);
+			return $this->remoteModMD5($mod, $version, $attempts + 1);
 		}
 	}
 }

@@ -37,7 +37,7 @@
 <input type="hidden" name="action" value="add">
 <tr id="mod-list-add">
 	<td>
-		<i class="icon-plus"></i> 
+		<i class="icon-plus"></i>
 		<select name="mod-name" id="mod">
 			<option value="">Select One</option>
 			@foreach (Mod::all() as $mod)
@@ -62,7 +62,7 @@ $(".mod-version").submit(function(e) {
 	e.preventDefault();
 	$.ajax({
 		type: "POST",
-		url: "{{ URL::to('modpack/modify/version') }}",
+		url: "{{ route('modpack.build.modify', 'version') }}",
 		data: $(this).serialize(),
 		success: function (data) {
 			alert(data.success);
@@ -74,7 +74,7 @@ $(".mod-delete").submit(function(e) {
 	e.preventDefault();
 	$.ajax({
 		type: "POST",
-		url: "{{ URL::to('modpack/modify/delete') }}",
+		url: "{{ route('modpack.build.modify', 'delete') }}",
 		data: $(this).serialize(),
 		success: function (data) {
 			//
@@ -87,7 +87,7 @@ $(".mod-add").submit(function(e) {
 	e.preventDefault();
 	$.ajax({
 		type: "POST",
-		url: "{{ URL::to('modpack/modify/add') }}",
+		url: "{{ route('modpack.build.modify', 'add') }}",
 		data: $(this).serialize(),
 		success: function (data) {
 			$("#mod-list-add").before('<tr><td>' + data.pretty_name + '</td><td>' + data.version + '</td><td></td></tr>');
@@ -98,7 +98,7 @@ $(".mod-add").submit(function(e) {
 $("#mod").change(function() {
 	$.ajax({
 		type: "GET",
-		url: "{{ URL::to('api/mod/') }}" + $(this).val(),
+		url: "{{ URL::to('api/mod').'/' }}" + $(this).val(),
 		success: function (data) {
 			$("#mod-version").empty();
 			$(data.versions).each(function(e, m) {

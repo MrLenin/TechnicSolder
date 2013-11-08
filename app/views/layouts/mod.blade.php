@@ -1,3 +1,5 @@
+@stylesheets('bootstrapper')
+@javascripts('bootstrapper', 'application')
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,8 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    {{ Basset::show('bootstrapper.css') }}
-    {{ Basset::show('bootstrapper.js') }}
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -39,15 +39,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{ URL::to('dashboard') }}">TechnicSolder</a>
+          <a class="navbar-brand" href="{{ action('DashboardController@getIndex') }}">TechnicSolder</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ URL::to('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ URL::to('modpack') }}">Modpacks</a></li>
-            <li><a href="{{ URL::to('mod') }}">Mod Library</a></li>
+            <li><a href="{{ action('DashboardController@getIndex') }}">Dashboard</a></li>
+            <li><a href="{{ route('modpack.index') }}">Modpacks</a></li>
+            <li class="active"><a href="{{ route('mod.index') }}">Mod Library</a></li>
           </ul>
-          <ul class="navbar-text navbar-right">
+          <ul class="nav navbar-nav navbar-text navbar-right navbar-user">
             Logged in as <a href="#" class="navbar-link">{{ Auth::user()->email }}</a>. ({{ HTML::link('logout','Logout') }})
           </ul>
         </div><!--/.nav-collapse -->
@@ -56,16 +56,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-heading text-center">
-              <h3 class="panel-title">Mod Library</h3>
-            </div>
-            <div class="list-group">
-            @section('navigation')
-              <a href="{{ URL::to('mod') }}"{{ $active = (Request::is('mod') ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-book"></i> Mod List</a>
-              <a href="{{ URL::to('mod/create') }}"{{ $active = (Request::is('mod/create') ? ' class="active list-group-item"' : ' class="list-group-item"') }}><i class="glyphicon glyphicon-plus"></i> Add a Mod</a></li>
-            @show
-            </div>
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="dropdown-header"><strong>MOD LIBRARY</strong></li>
+              @section('navigation')
+              <li{{ $active = (Request::is('mod') ? ' class="active"' : null) }}><a href="{{ URL::to('mod') }}"><i class="glyphicon glyphicon-book"></i> Mod List</a></li>
+              <li{{ $active = (Request::is('mod/create') ? ' class="active"' : null) }}><a href="{{ URL::to('mod/create') }}"><i class="glyphicon glyphicon-plus"></i> Add a Mod</a></li>
+              @show
+            </ul>
           </div><!--/.well -->
         </div><!--/span-->
         <div class="col-md-9">

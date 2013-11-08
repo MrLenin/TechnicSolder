@@ -26,8 +26,8 @@ class CacheController extends BaseController {
 		DB::query('DELETE FROM `modpacks`');
 		DB::query('DELETE FROM `builds`');
 		DB::query('DELETE FROM `mods`');
-		DB::query('DELETE FROM `modversions`');
-		DB::query('DELETE FROM `build_modversion`');
+		DB::query('DELETE FROM `mod_versions`');
+		DB::query('DELETE FROM `build_mod_version`');
 	}
 
 	private function getMods()

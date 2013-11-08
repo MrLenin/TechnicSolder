@@ -11,7 +11,8 @@
 	@endforeach
 	</div>
 @endif
-{{ Form::horizontal_open() }}
+{{ Form::horizontal_open(route('modpack.build.store', $modpack->id)) }}
+
 <div class="control-group">
 	<label class="control-label" for="version">Build Number</label>
 	<div class="controls">

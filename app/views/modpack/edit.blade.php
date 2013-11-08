@@ -20,7 +20,7 @@
 		<input type="checkbox" name="hidden" id="hidden"{{ $checked = ($modpack->hidden ? ' checked' : '') }}>
 	</div>
 </div>
-{{ Form::actions(array(Button::primary_submit('Edit Modpack'),Button::danger_link(URL::to('modpack/delete/'.$modpack->id),'Delete Modpack'))) }}
+{{ Button::primary_submit('Edit Modpack') }} {{ Button::danger_link(route('modpack.delete', $modpack->id),'Delete Modpack') }}
 {{ Form::close() }}
 <script type="text/javascript">
 $("#slug").slugify('#name');

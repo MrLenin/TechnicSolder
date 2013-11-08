@@ -5,8 +5,8 @@
 <h2>{{ $modpack->name }}</h2>
 <hr>
 <div class="pull-right">
-	<a class="btn btn-primary" href="{{ URL::to('modpack/addbuild/'.$modpack->id) }}">Create New Build</a> 
-	<a class="btn" href="{{ URL::to('modpack/edit/'.$modpack->id) }}">Edit Modpack</a>
+	<a class="btn btn-primary" href="{{ route('modpack.build.create', array('modpack' => $modpack->id)) }}">Create New Build</a>
+	<a class="btn" href="{{ route('modpack.edit', $modpack->id) }}">Edit Modpack</a>
 </div>
 <div class="alert alert-success" id="success-ajax" style="width: 500px;display: none">
 </div>
@@ -32,7 +32,7 @@
 		<td><input type="radio" name="latest" value="{{ $build->version }}"{{ $checked = ($modpack->latest == $build->version ? " checked" : "") }}></td>
 		<td><input type="checkbox" name="published" value="1" class="published" rel="{{ $build->id }}"{{ $checked = ($build->is_published ? " checked" : "") }}></td>
 		<td>{{ $build->created_at }}</td>
-		<td>{{ HTML::link('modpack/build/'.$build->id, "Manage",'class="btn btn-small btn-primary"') }} {{ HTML::link('modpack/build/'.$build->id.'?action=delete', "Delete",'class="btn btn-small btn-danger"') }}</td>
+		<td>{{ HTML::linkRoute('modpack.build.edit', "Manage", array('modpack' => $modpack->id, 'build' => $build->id), array('class' => "btn btn-small btn-primary")) }} {{ HTML::linkRoute('modpack.build.delete', "Delete", array('id' => $build->id), array('class' => "btn btn-small btn-danger")) }}</td>
 	</tr>
 @endforeach
 {{ Table::close() }}

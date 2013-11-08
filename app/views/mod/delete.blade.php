@@ -32,7 +32,6 @@
   </div>
 </div>
 {{ Form::open() }}
-
-{{ Form::actions(array(Button::danger_submit('Confirm Deletion'))) }}
+  {{ Button::danger_submit('Confirm Deletion') }}
 {{ Form::close() }}
 @endsection

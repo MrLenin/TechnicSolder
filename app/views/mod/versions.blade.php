@@ -1,9 +1,9 @@
 @extends('layouts/mod')
 @section('navigation')
 @parent
-<li class="nav-header">Mod: {{ $mod->name }}</li>
-<li><a href="{{ route('mod.edit', $mod->id) }}"><i class="glyphicon glyphicon-align-left"></i> Mod Details</a>
-<li class="active"><a href="{{ route('mod.show', $mod->id) }}"><i class="glyphicon glyphicon-tag"></i> Mod Versions</a></li>
+              <li class="dropdown-header"><strong>MOD: {{ strtoupper($mod->pretty_name) }}</strong></li>
+              <li><a href="{{ route('mod.edit', array($mod->id)) }}"><i class="glyphicon glyphicon-align-left"></i> Mod Details</a></li>
+              <li class="active"><a href="{{ route('mod.show', array($mod->id)) }}"><i class="glyphicon glyphicon-tag"></i> Mod Versions</a></li>
 @endsection
 @section('content')
 <h1>Mod Library</h1>
@@ -28,7 +28,7 @@
 			<input type="text" name="add-version" id="add-version" class="input-sm"></td>
 		<td>N/A</td>
 		<td><span id="add-url">N/A</span></td>
-		<td><button type="submit" class="btn btn-success btn-sm add">Add Version</button></td>
+		<td><button type="submit" class="btn btn-success btn-sm add", mod="{{ $mod->id }}">Add Version</button></td>
 	</form>
 </tr>
 @foreach ($mod->versions as $ver)
@@ -37,7 +37,7 @@
 		<td class="version" rel="{{ $ver->id }}">{{ $ver->version }}</td>
 		<td><span class="md5" rel="{{ $ver->id }}">{{ $ver->md5 }}</span></td>
 		<td class="url" rel="{{ $ver->id }}"><a href="{{ Config::get('solder.mirror_url').'mods/'.$mod->name.'/'.$mod->name.'-'.$ver->version.'.zip' }}">{{ Config::get('solder.mirror_url').'mods/'.$mod->name.'/'.$mod->name.'-'.$ver->version.'.zip' }}</a></td>
-		<td>{{ HTML::linkRoute('mod.version.update', 'Rehash', array('version' => $ver->id, 'mod' => $mod->id), array('class' => 'btn btn-primary btn-sm rehash', 'rel'=> $ver->id, 'title' => 'Rehash')) }} {{ HTML::linkRoute('mod.version.destroy', 'Delete', array('version' => $ver->id, 'mod' => $mod->id), array('class' => 'btn btn-danger btn-sm delete', 'rel'=> $ver->id, 'title' => 'Delete')) }}</td>
+		<td>{{ HTML::linkRoute('mod.show', 'Rehash', array('mod' => $mod->id), array('class' => 'btn btn-primary btn-sm rehash', 'mod' => $mod->id, 'rel'=> $ver->id, 'title' => 'Rehash')) }} {{ HTML::linkRoute('mod.show', 'Delete', array('mod' => $mod->id), array('class' => 'btn btn-danger btn-sm delete', 'mod' => $mod->id, 'rel'=> $ver->id, 'title' => 'Delete')) }}</td>
 	</tr>
 	<tr class="version-details" rel="{{ $ver->id }}" style="display: none">
 		<td colspan="5">
@@ -63,7 +63,7 @@ $('#add').submit(function(e) {
 	if ($('#add-version').val() != "") {
 		$.ajax({
 			type: "POST",
-			url: "{{ URL::to('mod/version') }}",
+			url: "{{ URL::to('mod').'/' }}" + $(this).attr('mod') + '/version',
 			data: $("#add").serialize(),
 			success: function (data) {
 				if (data.status == "success") {
@@ -87,7 +87,7 @@ $('.rehash').click(function(e) {
 	$(".md5[rel=" + $(this).attr('rel') + "]").fadeOut();
 	$.ajax({
 		type: "PUT",
-		url: "{{ URL::to('mod/version/') }}" + $(this).attr('rel'),
+		url: "{{ URL::to('mod').'/' }}" + $(this).attr('mod') + '/version/' + $(this).attr('rel'),
 		success: function (data) {
 			$(".md5[rel=" + data.version_id + "]").html(data.md5);
 			$(".md5[rel=" + data.version_id + "]").fadeIn();
@@ -99,7 +99,7 @@ $('.delete').click(function(e) {
 	e.preventDefault();
 	$.ajax({
 		type: "DELETE",
-		url: "{{ URL::to('mod/version/') }}" + $(this).attr('rel'),
+		url: "{{ URL::to('mod').'/' }}" + $(this).attr('mod') + "/version/" + $(this).attr('rel'),
 		success: function (data) {
 			$('.version[rel=' + data.version_id + ']').fadeOut();
 			$('.version-details[rel=' + data.version_id + ']').fadeOut();
