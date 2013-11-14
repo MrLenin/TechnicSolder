@@ -2,12 +2,18 @@
 @section('content')
 <h1>Modpack Management</h1>
 <hr>
+<div class="row">
+<div class="clearfix"></div>
+<div class="pull-left">
 <h2>{{ $modpack->name }}</h2>
-<hr>
+</div>
 <div class="pull-right">
 	<a class="btn btn-primary" href="{{ route('modpack.build.create', array('modpack' => $modpack->id)) }}">Create New Build</a>
 	<a class="btn" href="{{ route('modpack.edit', $modpack->id) }}">Edit Modpack</a>
 </div>
+</div>
+<hr>
+<div class="row">
 <div class="alert alert-success" id="success-ajax" style="width: 500px;display: none">
 </div>
 @if (Session::has('success'))
@@ -20,6 +26,9 @@
 	{{ Session::get('deleted') }}
 </div>
 @endif
+</div>
+<div class="row">
+<div class="table-responsive table-condensed">
 {{ Table::open() }}
 {{ Table::headers('#', 'Build Number', 'MC Version', 'Mod Count', 'Rec', 'Latest', 'Published','Created', '') }}
 @foreach ($modpack->builds as $build)
@@ -36,6 +45,8 @@
 	</tr>
 @endforeach
 {{ Table::close() }}
+</div>
+</div>
 <script type="text/javascript">
 
 $("input[name=recommended]").change(function() {

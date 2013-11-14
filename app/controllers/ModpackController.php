@@ -40,7 +40,7 @@ class ModpackController extends BaseController
 
 	public function store()
 	{
-		Validator::register('checkresources', function($attribute, $value, $parameters)
+		Validator::extend('checkresources', function($attribute, $value, $parameters)
 		{
 			if (FileUtils::check_resource($value,"logo_180.png") &&
 				FileUtils::check_resource($value,"icon.png") &&
@@ -115,7 +115,7 @@ class ModpackController extends BaseController
 			return Redirect::route('dashboard');
 		}
 
-		Validator::register('checkresources', function($attribute, $value, $parameters)
+		Validator::extend('checkresources', function($attribute, $value, $parameters)
 		{
 			if (FileUtils::check_resource($value,"logo_180.png") &&
 				FileUtils::check_resource($value,"icon.png") &&

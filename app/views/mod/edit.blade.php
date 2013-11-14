@@ -28,29 +28,13 @@
 		{{ Session::get('success') }}
 	</div>
 @endif
-{{ Form::model($mod, array('route' => array('mod.update', $mod->id), 'method' => 'put')) }}
-  <div class="form-group" style="width: 33%">
-    {{ Form::label('pretty_name', 'Mod Name') }}
-    {{ Form::text('pretty_name', null, array('class' => 'input-xxlarge')) }}
-  </div>
-  <div class="form-group" style="width: 33%">
-    {{ Form::label('name', 'Mod Slug') }}
-    {{ Form::text('name', null, array('class' => 'input-xxlarge')) }}
-  </div>
-  <div class="form-group" style="width: 33%">
-    {{ Form::label('author', 'Author') }}
-    {{ Form::text('author', null, array('class' => 'input-xxlarge')) }}
-  </div>
-  <div class="form-group" style="width: 100%">
-    {{ Form::label('description', 'Description') }}
-    {{ Form::textarea('description', null, array('class' => 'input-xxlarge', 'rows' => '5')) }}
-  </div>
-  <div class="form-group" style="width: 100%">
-    {{ Form::label('link', 'Mod Website') }}
-    {{ Form::text('link', null, array('class' => 'input-xxlarge')) }}
-  </div>
-  <div class="form-group">
-    {{ Button::primary_submit('Save changes') }} {{ Button::danger_link('mod/'.$mod->id.'/delete','Delete Mod') }}
-  </div>
-{{ Form::close() }}
+{{ Former::vertical_open(route('mod.update', $mod->id))->method('put') }}
+  {{ Former::populate($mod) }}
+  {{ Former::text('pretty_name')->addClass('input-xxlarge')->label('Mod Name')->style('width: 60%') }}
+  {{ Former::text('name')->addClass('input-xxlarge')->label('Mod Slug')->style('width: 60%') }}
+  {{ Former::text('author')->addClass('input-xxlarge')->label('Author')->style('width: 30%') }}
+  {{ Former::textarea('description')->addClass('input-xxlarge')->label('Description')->rows('5')->style('width: 60%') }}
+  {{ Former::text('link')->addClass('input-xxlarge')->label('Mod Website')->style('width: 60%') }}
+  {{ Former::actions(Button::primary_submit('Save changes'), Button::danger_link('mod/'.$mod->id.'/delete','Delete Mod')) }}
+{{ Former::close() }}
 @endsection

@@ -115,6 +115,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Bootstrapper\BootstrapperServiceProvider',
         'Basset\BassetServiceProvider',
+		'Former\FormerServiceProvider',
 	),
 
 	/*
@@ -203,6 +204,7 @@ return array(
 		'Typeahead'       => 'Bootstrapper\Typeahead',
 		'Typography'      => 'Bootstrapper\Typography',
         'Basset'          => 'Basset\Facade',
+		'Former'          => 'Former\Facades\Former',
 	),
 
 );

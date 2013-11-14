@@ -14,19 +14,14 @@
 	@endforeach
 	</div>
 @endif
-{{ Form::open(array('route' => 'mod.store')) }}
-  {{ Form::label('pretty_name', 'Mod Name') }}
-  {{ Form::text('pretty_name', null, array('class' => 'input-xxlarge')) }}
-  {{ Form::label('name', 'Mod Slug') }}
-  {{ Form::text('name', null, array('class' => 'input-xxlarge')) }}
-  {{ Form::label('author', 'Author') }}
-  {{ Form::text('author', null, array('class' => 'input-xxlarge')) }}
-  {{ Form::label('description', 'Description') }}
-  {{ Form::textarea('description', null, array('class' => 'input-xxlarge', 'rows' => '5')) }}
-  {{ Form::label('link', 'Mod Website') }}
-  {{ Form::text('link', null, array('class' => 'input-xxlarge')) }}
-  {{ Button::primary_submit('Add Mod') }}
-{{ Form::close() }}
+{{ Former::vertical_open(route('mod.store')) }}
+  {{ Former::text('pretty_name')->addClass('input-xxlarge')->label('Mod Name')->style('width: 60%') }}
+  {{ Former::text('name')->addClass('input-xxlarge')->label('Mod Slug')->style('width: 60%') }}
+  {{ Former::text('author')->addClass('input-xxlarge')->label('Author')->style('width: 30%') }}
+  {{ Former::textarea('description')->addClass('input-xxlarge')->label('Description')->rows('5')->style('width: 60%') }}
+  {{ Former::text('link')->addClass('input-xxlarge')->label('Mod Website')->style('width: 60%') }}
+  {{ Former::actions(Button::primary_submit('Add Mod')) }}
+{{ Former::close() }}
 <script type="text/javascript">
 $("#name").slugify('#pretty_name');
 $(".modslug").slugify("#pretty_name");

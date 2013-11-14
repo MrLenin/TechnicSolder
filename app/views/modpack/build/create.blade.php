@@ -11,36 +11,10 @@
 	@endforeach
 	</div>
 @endif
-{{ Form::horizontal_open(route('modpack.build.store', $modpack->id)) }}
-
-<div class="control-group">
-	<label class="control-label" for="version">Build Number</label>
-	<div class="controls">
-		<input class="input-large" type="text" name="version" id="version">
-	</div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="minecraft">Minecraft Version</label>
-	<div class="controls">
-		<select name="minecraft">
-			@foreach ($minecraft as $version)
-			<option value="{{ $version->version }}:{{ $version->md5 }}">{{ $version->version }}</option>
-			@endforeach
-		</select>
-	</div>
-</div>
-<div class="control-group">
-	<label class="control-label" for="slug">Clone Build</label>
-	<div class="controls">
-		<select name="clone">
-			<option value="">Do not clone</option>
-			@foreach ($modpack->builds as $build)
-				<option value="{{ $build->id }}">{{ $build->version }}</option>
-			@endforeach
-		</select>
-		<p class="help-block">This will clone all the mods and mod versions of another build in this pack.</p>
-	</div>
-</div>
-{{ Form::actions(array(Button::primary_submit('Add New Build'))) }}
-{{ Form::close() }}
+{{ Former::horizontal_open(route('modpack.build.store', $modpack->id)) }}
+{{ Former::text('version')->addClass('input-large')->label('Build Number')->style('width: 35%') }}
+{{ Former::select('minecraft')->options($minecraft)->label('Minecraft Version', array('class' => 'control-label'))->style('width: 35%') }}
+{{ Former::select('clone')->options($build)->label('Clone Build')->inlineHelp('This will clone all the mods and mod versions of another build in this pack.')->style('width: 35%') }}
+{{ Former::actions(Button::primary_submit('Add New Build')) }}
+{{ Former::close() }}
 @endsection

@@ -25,13 +25,19 @@
           padding-right: 5px;
         }
       }
+.my-fluid-container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
     </style>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
   </head>
 
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+      <div class="my-fluid-container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -53,22 +59,22 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    <div class="container">
+    <div class="my-fluid-container">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 col-lg-2">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="dropdown-header"><strong>SOLDER</strong></li>
               <li{{ $active = (Request::is('dashboard') ? ' class="active"' : null) }}><a href="{{ action('DashboardController@getIndex') }}"><i class="glyphicon glyphicon-home"></i> Dashboard</a></li>
-              <li{{ $active = (Request::is('user/edit/'.Auth::user()->id) ? ' class="active"' : null) }}><a href="{{ URL::to('user/edit/'.Auth::user()->id) }}"><i class="glyphicon glyphicon-edit"></i> Edit My Account</a></li>
+              <li{{ $active = (Request::is('user/edit/'.Auth::user()->id) ? ' class="active"' : null) }}><a href="{{ route('user.edit', Auth::user()->id) }}"><i class="glyphicon glyphicon-edit"></i> Edit My Account</a></li>
               <li><a href="#"><i class="glyphicon glyphicon-info-sign"></i> Statistics</a></li>
               <li class="dropdown-header"><strong>MANAGE SOLDER</strong></li>
-              <li{{ $active = (Request::is('solder/configure') ? ' class="active"' : null) }}><a href="{{ URL::to('solder/configure') }}"><i class="glyphicon glyphicon-cog"></i> Configuration</a></li>
-              <li{{ $active = (Request::is('user/*') && !Request::is('user/edit/'.Auth::user()->id) ? ' class="active"' : null) }}><a href="{{ URL::to('user/list') }}"><i class="glyphicon glyphicon-user"></i> Manage Users</a></li>
+              <li{{ $active = (Request::is('solder/configure') ? ' class="active"' : null) }}><a href="{{ action('SolderController@getConfigure') }}"><i class="glyphicon glyphicon-cog"></i> Configuration</a></li>
+              <li{{ $active = (Request::is('user/*') && !Request::is('user/'.Auth::user()->id.'/edit') ? ' class="active"' : null) }}><a href="{{ route('user.index') }}"><i class="glyphicon glyphicon-user"></i> Manage Users</a></li>
             </ul>
           </div>
         </div><!--/span-->
-        <div class="col-md-9">
+        <div class="col-md-9 col-lg-10">
           @yield('content')
         </div><!--/span-->
       </div><!--/row-->

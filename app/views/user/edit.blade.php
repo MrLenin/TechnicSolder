@@ -16,50 +16,32 @@
 		{{ Session::get('success') }}
 	</div>
 @endif
-{{ Form::horizontal_open() }}
-{{ Form::hidden("edit-user", 1) }}
-{{ Form::control_group(Form::label('email', 'Email Address'), Form::xxlarge_text('email', $user->email)) }}
-{{ Form::control_group(Form::label('username', 'Username'), Form::xxlarge_text('username', $user->username)) }}
-<hr>
-<p>If you would like to this accounts password you may include new passwords below. This is not required to edit an account</p>
-{{ Form::control_group(Form::label('password1', 'Password'), Form::xxlarge_password('password1')) }}
-{{ Form::control_group(Form::label('password2', 'Password Again'), Form::xxlarge_password('password2')) }}
-<hr>
-@if (Auth::user()->permission->solder_full || Auth::user()->permission->solder_users)
-<h3>Permissions</h3>
-<p>
+{{ Former::horizontal_open(route('user.update', $user->id))->method('put') }}
+  {{ Former::populate($user) }}
+  {{ Former::text('email')->label('Email Address')->addClass('input-xxlarge')->style('width: 75%') }}
+  {{ Former::text('username')->label('Username')->addClass('input-xxlarge')->style('width: 75%') }}
+  <hr>
+  <p>If you would like to change this accounts password you may include new passwords below. This is not required to edit an account</p>
+  {{ Former::password('password1')->label('Password')->addClass('input-xxlarge')->style('width: 75%') }}
+  {{ Former::password('password2')->label('Password Again')->addClass('input-xxlarge')->style('width: 75%') }}
+  <hr>
+  @if (Auth::user()->permission->solder_full || Auth::user()->permission->solder_users)
+  <h3>Permissions</h3>
+  <p>
     Please select the level of access this user will be given. The "Solderwide" permission is required to access a specific section. (Ex. Manage Modpacks is required for anyone to access even the list of modpacks. They will also need the respective permission for each modpack they should have access to.)
-</p>
-<div class="control-group">
-    <label class="control-label">Solderwide</label>
-    <div class="controls">
-        <label for="solder-full"><input type="checkbox" name="solder-full" id="solder-full" value="1"{{ $checked = ($user->permission->solder_full ? " checked" : "") }}> Full Solder Access (Blanket permission)</label>
-        <label for="manage-users"><input type="checkbox" name="manage-users" id="manage-users" value="1"{{ $checked = ($user->permission->solder_users ? " checked" : "") }}> Manage Users</label>
-        <label for="manage-packs"><input type="checkbox" name="manage-packs" id="manage-packs" value="1"{{ $checked = ($user->permission->solder_modpacks ? " checked" : "") }}> Manage Modpacks</label>
-        <label for="manage-mods"><input type="checkbox" name="manage-mods" id="manage-mods" value="1"{{ $checked = ($user->permission->solder_mods ? " checked" : "") }}> Manage Mods</label>
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label">Mod Library</label>
-    <div class="controls">
-        <label for="mod-create"><input type="checkbox" name="mod-create" id="mod-create" value="1"{{ $checked = ($user->permission->mods_create ? " checked" : "") }}> Create Mods</label>
-        <label for="mod-manage"><input type="checkbox" name="mod-manage" id="mod-manage" value="1"{{ $checked = ($user->permission->mods_manage ? " checked" : "") }}> Manage Mods</label>
-        <label for="mod-delete"><input type="checkbox" name="mod-delete" id="mod-delete" value="1"{{ $checked = ($user->permission->mods_delete ? " checked" : "") }}> Delete Mods</label>
-    </div>
-</div>
-<div class="control-group">
-    <label class="control-label">Modpack Access</label>
-    <div class="controls">
-        <label for="solder-create"><input type="checkbox" name="solder-create" id="solder-create" value="1"{{ $checked = ($user->permission->solder_create ? " checked" : "") }}> Create Modpacks</label>
-        @foreach (Modpack::all() as $modpack)
-            <label for="{{ $modpack->slug }}"><input type="checkbox" name="modpack[]" id="{{ $modpack->slug }}" value="{{ $modpack->id }}"{{ $checked = (in_array($modpack->id, array($user->permission->modpacks)) ? " checked" : "") }}> {{ $modpack->name }}</label>
-        @endforeach
-    </div>
-</div>
-@endif
-<?php echo Form::actions(array(
-			Button::primary_submit('Save changes'),
-			Button::link(URL::to('user/list'),'Go Back')
-			)) ?>
-{{ Form::close() }}
+  </p>
+  {{ Former::checkbox('permission.solder_full')->text('Full Solder Access (Blanket permission)')->label('Solderwide') }}
+  {{ Former::checkbox('permission.manage_users')->text('Manage Users')->label(' ') }}
+  {{ Former::checkbox('permission.manage_packs')->text('Manage Modpacks')->label(' ') }}
+  {{ Former::checkbox('permission.manage_mods')->text('Manage Mods')->label(' ') }}
+  {{ Former::checkbox('permission.mod_create')->text('Create Mods')->label('Mod Library') }}
+  {{ Former::checkbox('permission.mod_manage')->text('Manage Mods')->label(' ') }}
+  {{ Former::checkbox('permission.mod_delete')->text('Delete Mods')->label(' ') }}
+  {{ Former::checkbox('permission.solder_create')->text('Create Modpacks')->label('Modpack Access') }}
+  @foreach (Modpack::all() as $modpack)
+    {{ Former::checkbox($modpack->slug)->name($modpack->name)->text($modpack->name)->label(' ')->setAttribute('value', $modpack->id) }}
+  @endforeach
+  @endif
+  {{ Former::actions(Button::primary_submit('Save changes'), Button::link(URL::to('/user'),'Go Back')) }}
+{{ Former::close() }}
 @endsection

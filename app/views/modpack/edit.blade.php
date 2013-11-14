@@ -11,17 +11,13 @@
 	@endforeach
 	</div>
 @endif
-{{ Form::horizontal_open() }}
-{{ Form::control_group(Form::label('name', 'Modpack Name'), Form::xxlarge_text('name', $modpack->name)) }}
-{{ Form::control_group(Form::label('slug', 'Modpack Slug'), Form::xxlarge_text('slug', $modpack->slug)) }}
-<div class="control-group">
-	<label class="control-label" for="hidden">Hide Modpack</label>
-	<div class="controls">
-		<input type="checkbox" name="hidden" id="hidden"{{ $checked = ($modpack->hidden ? ' checked' : '') }}>
-	</div>
-</div>
-{{ Button::primary_submit('Edit Modpack') }} {{ Button::danger_link(route('modpack.delete', $modpack->id),'Delete Modpack') }}
-{{ Form::close() }}
+{{ Former::horizontal_open(route('modpack.update', $modpack->id))->method('put') }}
+  {{ Former::populate($modpack) }}
+  {{ Former::text('name')->label('Modpack Name')->addClass('input-xxlarge')->style('width: 75%') }}
+  {{ Former::text('slug')->label('Modpack Slug')->addClass('input-xxlarge')->style('width: 75%') }}
+  {{ Former::checkbox('hidden')->text(' ')->label('Hide Modpack') }}
+  {{ Former::actions(Button::primary_submit('Edit Modpack'), Button::danger_link(route('modpack.delete', $modpack->id),'Delete Modpack')) }}
+{{ Former::close() }}
 <script type="text/javascript">
 $("#slug").slugify('#name');
 </script>

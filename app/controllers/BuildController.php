@@ -52,14 +52,16 @@ class BuildController extends BaseController
 		{
 			$recbuild = Build::where('modpack_id','=',$modpack->id)
 			->orderBy('id','desc')->first();
-			$modpack->recommended = $recbuild->version;
+			if (!empty($recbuild)) $modpack->recommended = $recbuild->version;
+			else $modpack->recommended = null;
 		}
 
 		if ($switchlat)
 		{
-			$latbuild = Build::where('modpack_id','=',$modpack->id)
+			$lastbuild = Build::where('modpack_id','=',$modpack->id)
 			->orderBy('id','desc')->first();
-			$modpack->latest = $latbuild->version;
+			if (!empty($lastbuild)) $modpack->latest = $lastbuild->version;
+			else $modpack->latest = null;
 		}
 		$modpack->save();
 
@@ -87,12 +89,14 @@ class BuildController extends BaseController
 		if (empty($modpack))
 			return Redirect::route('modpack.index');
 
-		$minecraft = $this->getMinecraft();
+		$minecraft = $this->getMinecraftVersionArray();
+		$build = $this->getBuildVersionArray($modpack);
 
 		return View::make('modpack.build.create')
 		->with(array(
 				'modpack' => $modpack,
-				'minecraft' => $minecraft
+				'minecraft' => $minecraft,
+				'build' => $build
 		));
 	}
 
@@ -221,5 +225,22 @@ class BuildController extends BaseController
 		$response = UrlUtils::get_url_contents($url);
 
 		return json_decode($response);
+	}
+
+	public function getMinecraftVersionArray()
+	{
+		$modVersions = $this->getMinecraft();
+		$versionArray = array();
+		$buildArray[''] = 'Select a version';
+		foreach ($modVersions as $modVersion) $versionArray[$modVersion->version.':'.$modVersion->md5] = $modVersion->version;
+		return $versionArray;
+	}
+
+	public function getBuildVersionArray($modpack)
+	{
+		$buildArray = array();
+		$buildArray[''] = 'Do not clone';
+		foreach ($modpack->builds as $build) $buildArray[$build->id] = $build->version;
+		return $buildArray;
 	}
 }

@@ -25,13 +25,19 @@
           padding-right: 5px;
         }
       }
+.my-fluid-container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
     </style>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
   </head>
 
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+      <div class="my-fluid-container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -53,9 +59,9 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    <div class="container">
+    <div class="my-fluid-container">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 col-lg-2">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="dropdown-header"><strong>MOD LIBRARY</strong></li>
@@ -66,7 +72,7 @@
             </ul>
           </div><!--/.well -->
         </div><!--/span-->
-        <div class="col-md-9">
+        <div class="col-md-9 col-lg-10">
           @yield('content')
         </div><!--/span-->
       </div><!--/row-->
